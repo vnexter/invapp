@@ -1,0 +1,12 @@
+import dbGetInvoices from "@/app/lib/prisma/db-get-invoices";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/utils";
+
+export async function GET() {
+	const session = await getServerSession(authOptions);
+	const userId = session?.user?.id as string;
+
+	const invoices = await dbGetInvoices({ userId });
+
+	return new Response(JSON.stringify(invoices));
+}
